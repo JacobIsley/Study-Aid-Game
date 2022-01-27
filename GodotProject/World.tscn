@@ -7,3 +7,11 @@
 [node name="Rat2" type="Sprite" parent="."]
 position = Vector2( 128, 128 )
 texture = ExtResource( 1 )
+
+[node name="Label" type="Label" parent="."]
+margin_right = 243.0
+margin_bottom = 48.0
+text = "This has been edited from Juliet's CPU"
+__meta__ = {
+"_edit_use_anchors_": false
+}
