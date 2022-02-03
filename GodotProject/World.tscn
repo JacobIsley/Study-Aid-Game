@@ -9,3 +9,12 @@ text = "Edited from Jake's PC"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Yanye" type="Label" parent="."]
+margin_top = 16.0
+margin_right = 40.0
+margin_bottom = 30.0
+text = "Yanye should edit this line"
+__meta__ = {
+"_edit_use_anchors_": false
+}
