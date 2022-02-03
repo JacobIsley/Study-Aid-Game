@@ -3,10 +3,25 @@
 [node name="World" type="Node2D"]
 
 [node name="Label" type="Label" parent="."]
+<<<<<<< HEAD
 modulate = Color( 1, 0, 1, 1 )
 margin_right = 243.0
 margin_bottom = 48.0
 text = "This has been edited from Jake's PC"
+=======
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Edited from Jake's PC"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+margin_top = 24.0
+margin_right = 133.0
+margin_bottom = 38.0
+text = "Edit this from Yanye's PC"
+>>>>>>> jake
 __meta__ = {
 "_edit_use_anchors_": false
 }
