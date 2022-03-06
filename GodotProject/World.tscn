@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Background.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Alien.png" type="Texture" id=2]
 [ext_resource path="res://Battle.gd" type="Script" id=3]
+[ext_resource path="res://Enemy.gd" type="Script" id=4]
 
 [node name="Battle" type="Node2D"]
 script = ExtResource( 3 )
@@ -19,15 +20,16 @@ centered = false
 
 [node name="Enemy" type="Node2D" parent="."]
 position = Vector2( 164, 93 )
+script = ExtResource( 4 )
 
 [node name="Alien Sprite" type="Sprite" parent="Enemy"]
 texture = ExtResource( 2 )
 
 [node name="HP Label" type="Label" parent="Enemy"]
-margin_left = -121.0
-margin_top = 62.0
-margin_right = -60.0
-margin_bottom = 76.0
+margin_left = -125.0
+margin_top = 41.0
+margin_right = -64.0
+margin_bottom = 55.0
 text = "10 HP"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -40,12 +42,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Textbox Panel" type="Panel" parent="UI"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 228.0
+margin_bottom = 55.0
+
 [node name="Attack Button" type="Button" parent="UI"]
-margin_left = 250.0
+margin_left = 251.0
 margin_top = 147.0
-margin_right = 258.0
+margin_right = 297.0
 margin_bottom = 169.0
 text = "attack"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Stats Panel" type="Panel" parent="UI"]
+margin_left = 35.0
+margin_top = 147.0
+margin_right = 198.0
+margin_bottom = 178.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
