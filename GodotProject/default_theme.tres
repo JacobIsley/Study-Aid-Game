@@ -1,0 +1,51 @@
+[gd_resource type="Theme" load_steps=10 format=2]
+
+[ext_resource path="res://Assets/PixelRPG.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/ButtonHover9Slice.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Button9Slice.png" type="Texture" id=3]
+[ext_resource path="res://Assets/ButtonPressed9Slice.png" type="Texture" id=4]
+
+[sub_resource type="StyleBoxTexture" id=2]
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 4.0
+margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id=3]
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 4.0
+margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id=4]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 4.0
+margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id=5]
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 4.0
+margin_bottom = 4.0
+
+[sub_resource type="DynamicFont" id=1]
+size = 12
+extra_spacing_bottom = -2
+font_data = ExtResource( 1 )
+
+[resource]
+default_font = SubResource( 1 )
+Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+Button/styles/hover = SubResource( 2 )
+Button/styles/normal = SubResource( 3 )
+Button/styles/pressed = SubResource( 4 )
+Panel/styles/panel = SubResource( 5 )
