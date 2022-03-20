@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Alien.png" type="Texture" id=2]
 [ext_resource path="res://default_theme.tres" type="Theme" id=3]
+[ext_resource path="res://HoverInfo.tscn" type="PackedScene" id=4]
 
 [sub_resource type="Animation" id=3]
 resource_name = "Attack"
@@ -87,3 +88,9 @@ __meta__ = {
 anims/Attack = SubResource( 3 )
 anims/RESET = SubResource( 1 )
 anims/Shake = SubResource( 2 )
+
+[node name="HoverInfo" parent="." instance=ExtResource( 4 )]
+margin_left = -36.0
+margin_top = -26.0
+margin_right = 44.0
+margin_bottom = 34.0
