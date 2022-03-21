@@ -91,13 +91,14 @@ __meta__ = {
 
 [node name="NextRoomButton" type="Button" parent="UI/CenterContainer"]
 visible = false
-margin_left = 26.0
-margin_top = 22.0
-margin_right = 142.0
-margin_bottom = 44.0
+margin_left = 19.0
+margin_top = 24.0
+margin_right = 149.0
+margin_bottom = 42.0
 rect_min_size = Vector2( 70, 13 )
 mouse_filter = 2
-text = "Enter Next Room"
+custom_fonts/font = ExtResource( 6 )
+text = "Next Battle!"
 
 [node name="TextboxPanel" type="Panel" parent="UI"]
 margin_left = 4.0
@@ -114,6 +115,7 @@ margin_top = 5.0
 margin_right = 215.0
 margin_bottom = 45.0
 theme = SubResource( 3 )
+custom_fonts/normal_font = ExtResource( 6 )
 custom_styles/normal = SubResource( 4 )
 text = "test"
 
