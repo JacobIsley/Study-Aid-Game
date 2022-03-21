@@ -91,12 +91,11 @@ __meta__ = {
 
 [node name="NextRoomButton" type="Button" parent="UI/CenterContainer"]
 visible = false
-margin_left = 19.0
+margin_left = 36.0
 margin_top = 24.0
-margin_right = 149.0
+margin_right = 132.0
 margin_bottom = 42.0
 rect_min_size = Vector2( 70, 13 )
-mouse_filter = 2
 custom_fonts/font = ExtResource( 6 )
 text = "Next Battle!"
 
