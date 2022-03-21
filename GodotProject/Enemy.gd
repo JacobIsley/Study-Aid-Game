@@ -18,6 +18,8 @@ func set_hp(new_hp):
 	
 func _ready():
 	BattleUnits.Enemy = self
+	# update health immediately, display the correct number
+	self.set_hp(hp)
 	
 func _exit_tree():
 	BattleUnits.Enemy = null
@@ -28,6 +30,7 @@ func attack() -> void:
 	yield(animationPlayer, "animation_finished")
 	emit_signal("end_turn")
 
+# takes damage and automatically updates health label
 func take_damage(amount):
 	self.hp -= amount
 	if is_dead():
