@@ -22,7 +22,7 @@ _global_script_class_icons={
 
 config/name="CIS Godot Project"
 run/main_scene="res://Battle.tscn"
-config/icon="res://icon.png"
+config/icon="res://Assets/Alien.png"
 
 [display]
 

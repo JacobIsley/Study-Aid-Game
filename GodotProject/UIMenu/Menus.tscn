@@ -1,0 +1,153 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://UIMenu/Menus.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Menu.png" type="Texture" id=2]
+[ext_resource path="res://default_theme.tres" type="Theme" id=3]
+[ext_resource path="res://big_font.tres" type="DynamicFont" id=4]
+[ext_resource path="res://UIMenu/Bouncer.tscn" type="PackedScene" id=5]
+
+[node name="Menus" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="MainMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="Sprite" parent="MainMenu"]
+texture = ExtResource( 2 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="MainMenu"]
+position = Vector2( 96, 64 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MainMenu/StaticBody2D"]
+polygon = PoolVector2Array( 0, 0, 208, 0, 208, 112, 0, 112, 0, 104, 200, 104, 200, 8, 8, 8, 8, 104, 0, 104 )
+
+[node name="Bouncer" parent="MainMenu" instance=ExtResource( 5 )]
+position = Vector2( 200, 112 )
+
+[node name="TitlePanel" type="Panel" parent="MainMenu"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 144.0
+margin_bottom = 42.0
+theme = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleLabel" type="Label" parent="MainMenu/TitlePanel"]
+margin_left = 10.0
+margin_top = 11.0
+margin_right = 126.0
+margin_bottom = 25.0
+theme = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
+text = "Stellar Studying"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Popup" type="Popup" parent="MainMenu"]
+visible = true
+margin_left = 152.0
+margin_top = 8.0
+margin_right = 312.0
+margin_bottom = 56.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="MainMenu/Popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="MainMenu/Popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -4.0
+theme = ExtResource( 3 )
+text = "Programmers: Jake Isley, Yanye Luther
+Artists: Jake Isley, Eliana Sweet
+Writers:  Gracen Pendleton
+       Kathryn Powers
+	       Eliana Sweet       CIS320"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="GridContainer" parent="MainMenu"]
+margin_left = 8.0
+margin_top = 56.0
+margin_right = 68.0
+margin_bottom = 128.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartButton" type="Button" parent="MainMenu/CenterContainer"]
+margin_right = 60.0
+margin_bottom = 18.0
+custom_fonts/font = ExtResource( 4 )
+text = "Start"
+
+[node name="CreditsButton" type="Button" parent="MainMenu/CenterContainer"]
+margin_top = 22.0
+margin_right = 60.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 60, 0 )
+custom_fonts/font = ExtResource( 4 )
+text = "Credits"
+
+[node name="ExitButton" type="Button" parent="MainMenu/CenterContainer"]
+margin_top = 44.0
+margin_right = 60.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 60, 0 )
+custom_fonts/font = ExtResource( 4 )
+text = "Exit"
+
+[node name="QuestionMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 320.0
+margin_right = 320.0
+
+[node name="Sprite" type="Sprite" parent="QuestionMenu"]
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Label" type="Label" parent="QuestionMenu"]
+margin_top = 83.0
+margin_right = 320.0
+margin_bottom = 97.0
+text = "Other panel"
+align = 1
+
+[node name="CenterContainer" type="GridContainer" parent="QuestionMenu"]
+margin_right = 320.0
+margin_bottom = 180.0
+
+[node name="BackButton" type="Button" parent="QuestionMenu/CenterContainer"]
+margin_right = 38.0
+margin_bottom = 22.0
+text = "Back"
+
+[connection signal="pressed" from="MainMenu/CenterContainer/StartButton" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="MainMenu/CenterContainer/CreditsButton" to="." method="_on_CreditsButton_pressed"]
+[connection signal="pressed" from="MainMenu/CenterContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="pressed" from="QuestionMenu/CenterContainer/BackButton" to="." method="_on_BackButton_pressed"]
