@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://default_theme.tres" type="Theme" id=1]
+[ext_resource path="res://UIMenu/FileLoader.gd" type="Script" id=2]
+
+[node name="FileLoader" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -256.0
+margin_bottom = -156.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DisplayText" type="RichTextLabel" parent="."]
+margin_right = 136.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 136, 16 )
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+text = "Drag and Drop a txt file here!"
+__meta__ = {
+"_edit_use_anchors_": false
+}

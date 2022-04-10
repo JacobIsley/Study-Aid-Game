@@ -1,42 +1,57 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://UIMenu/Menus.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Menu.png" type="Texture" id=2]
 [ext_resource path="res://default_theme.tres" type="Theme" id=3]
 [ext_resource path="res://big_font.tres" type="DynamicFont" id=4]
 [ext_resource path="res://UIMenu/Bouncer.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ButtonHover9Slice.tres" type="StyleBox" id=6]
+[ext_resource path="res://UIMenu/MenuSwitch.gd" type="Script" id=7]
+[ext_resource path="res://UIMenu/FileLoader.tscn" type="PackedScene" id=8]
+[ext_resource path="res://UIMenu/FileContainer.gd" type="Script" id=9]
+[ext_resource path="res://UIMenu/FileButtons.gd" type="Script" id=10]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
 
 [node name="Menus" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tween" type="Tween" parent="."]
-
-[node name="MainMenu" type="Control" parent="."]
+[node name="MainMenu" type="Control" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Background" type="Sprite" parent="MainMenu"]
+[node name="Background" type="Sprite" parent="Control/MainMenu"]
 texture = ExtResource( 2 )
 centered = false
 
-[node name="StaticBody2D" type="StaticBody2D" parent="MainMenu"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Control/MainMenu"]
 position = Vector2( 96, 64 )
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MainMenu/StaticBody2D"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Control/MainMenu/StaticBody2D"]
 polygon = PoolVector2Array( 0, 0, 208, 0, 208, 112, 0, 112, 0, 104, 200, 104, 200, 8, 8, 8, 8, 104, 0, 104 )
 
-[node name="Bouncer" parent="MainMenu" instance=ExtResource( 5 )]
+[node name="Bouncer" parent="Control/MainMenu" instance=ExtResource( 5 )]
 position = Vector2( 200, 112 )
 
-[node name="TitlePanel" type="Panel" parent="MainMenu"]
+[node name="TitlePanel" type="Panel" parent="Control/MainMenu"]
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 144.0
@@ -46,7 +61,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TitleLabel" type="Label" parent="MainMenu/TitlePanel"]
+[node name="TitleLabel" type="Label" parent="Control/MainMenu/TitlePanel"]
 margin_left = 10.0
 margin_top = 11.0
 margin_right = 126.0
@@ -59,38 +74,50 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Popup" type="Popup" parent="MainMenu"]
-visible = true
-margin_left = 152.0
-margin_top = 8.0
-margin_right = 312.0
-margin_bottom = 56.0
+[node name="Popup" type="Popup" parent="Control/MainMenu"]
+margin_left = 80.0
+margin_top = 56.0
+margin_right = 240.0
+margin_bottom = 104.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="MainMenu/Popup"]
+[node name="Panel" type="Panel" parent="Control/MainMenu/Popup"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = 72.0
+margin_bottom = 72.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Label" type="Label" parent="MainMenu/Popup"]
+[node name="Label" type="Label" parent="Control/MainMenu/Popup"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = -4.0
+margin_top = 8.0
+margin_right = 48.0
+margin_bottom = 56.0
 theme = ExtResource( 3 )
 text = "Programmers: Jake Isley, Yanye Luther
+
 Artists: Jake Isley, Eliana Sweet
-Writers:  Gracen Pendleton
-       Kathryn Powers
-	       Eliana Sweet       CIS320"
+
+Writers:  Gracen Pendleton, Kathryn Powers, Eliana Sweet 
+		
+Special thanks: SPONSOR, PLAYTESTERS, TEACHER
+		
+		
+
+
+		
+CIS320"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CenterContainer" type="GridContainer" parent="MainMenu"]
+[node name="CenterContainer" type="GridContainer" parent="Control/MainMenu"]
 margin_left = 8.0
 margin_top = 56.0
 margin_right = 68.0
@@ -99,21 +126,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StartButton" type="Button" parent="MainMenu/CenterContainer"]
+[node name="StartButton" type="Button" parent="Control/MainMenu/CenterContainer"]
 margin_right = 60.0
 margin_bottom = 18.0
 custom_fonts/font = ExtResource( 4 )
+custom_styles/focus = SubResource( 1 )
 text = "Start"
 
-[node name="CreditsButton" type="Button" parent="MainMenu/CenterContainer"]
+[node name="CreditsButton" type="Button" parent="Control/MainMenu/CenterContainer"]
 margin_top = 22.0
 margin_right = 60.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 60, 0 )
 custom_fonts/font = ExtResource( 4 )
+custom_styles/focus = SubResource( 2 )
 text = "Credits"
 
-[node name="ExitButton" type="Button" parent="MainMenu/CenterContainer"]
+[node name="ExitButton" type="Button" parent="Control/MainMenu/CenterContainer"]
 margin_top = 44.0
 margin_right = 60.0
 margin_bottom = 62.0
@@ -121,33 +150,127 @@ rect_min_size = Vector2( 60, 0 )
 custom_fonts/font = ExtResource( 4 )
 text = "Exit"
 
-[node name="QuestionMenu" type="Control" parent="."]
+[node name="QuestionMenu" type="Control" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 320.0
 margin_right = 320.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Sprite" type="Sprite" parent="QuestionMenu"]
+[node name="Background" type="Sprite" parent="Control/QuestionMenu"]
 texture = ExtResource( 2 )
 centered = false
 
-[node name="Label" type="Label" parent="QuestionMenu"]
-margin_top = 83.0
-margin_right = 320.0
-margin_bottom = 97.0
-text = "Other panel"
+[node name="BackPanel" type="Panel" parent="Control/QuestionMenu"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 312.0
+margin_bottom = 176.0
+
+[node name="TitleLabel" type="Label" parent="Control/QuestionMenu"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 160.0
+margin_bottom = 26.0
+theme = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
+text = "Select a Question Set"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="CenterContainer" type="GridContainer" parent="QuestionMenu"]
-margin_right = 320.0
-margin_bottom = 180.0
+[node name="FileContainer" type="ScrollContainer" parent="Control/QuestionMenu"]
+margin_left = 16.0
+margin_top = 40.0
+margin_right = 304.0
+margin_bottom = 127.0
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="BackButton" type="Button" parent="QuestionMenu/CenterContainer"]
-margin_right = 38.0
-margin_bottom = 22.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/QuestionMenu/FileContainer"]
+
+[node name="BackButton" type="Button" parent="Control/QuestionMenu"]
+margin_left = 272.0
+margin_top = 16.0
+margin_right = 304.0
+margin_bottom = 29.0
+theme = ExtResource( 3 )
 text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[connection signal="pressed" from="MainMenu/CenterContainer/StartButton" to="." method="_on_Button_pressed"]
-[connection signal="pressed" from="MainMenu/CenterContainer/CreditsButton" to="." method="_on_CreditsButton_pressed"]
-[connection signal="pressed" from="MainMenu/CenterContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
-[connection signal="pressed" from="QuestionMenu/CenterContainer/BackButton" to="." method="_on_BackButton_pressed"]
+[node name="HelpButton" type="Button" parent="Control/QuestionMenu"]
+margin_left = 232.0
+margin_top = 16.0
+margin_right = 264.0
+margin_bottom = 29.0
+theme = ExtResource( 3 )
+custom_styles/focus = SubResource( 3 )
+text = "Help"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FilePanel" type="Panel" parent="Control/QuestionMenu"]
+margin_left = 16.0
+margin_top = 136.0
+margin_right = 160.0
+margin_bottom = 168.0
+custom_styles/panel = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FileLoader" parent="Control/QuestionMenu/FilePanel" instance=ExtResource( 8 )]
+margin_left = 8.0
+margin_top = 12.0
+margin_right = -136.0
+margin_bottom = -20.0
+
+[node name="FileButtons" type="Control" parent="Control/QuestionMenu"]
+visible = false
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GoButton" type="Button" parent="Control/QuestionMenu/FileButtons"]
+margin_left = 232.0
+margin_top = 136.0
+margin_right = 304.0
+margin_bottom = 168.0
+theme = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
+text = "Go!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DeleteButton" type="Button" parent="Control/QuestionMenu/FileButtons"]
+margin_left = 168.0
+margin_top = 136.0
+margin_right = 224.0
+margin_bottom = 168.0
+theme = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
+text = "Delete"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="Control"]
+
+[connection signal="pressed" from="Control/MainMenu/CenterContainer/StartButton" to="Control" method="_on_StartButton_pressed"]
+[connection signal="pressed" from="Control/MainMenu/CenterContainer/CreditsButton" to="Control" method="_on_CreditsButton_pressed"]
+[connection signal="pressed" from="Control/MainMenu/CenterContainer/ExitButton" to="Control" method="_on_ExitButton_pressed"]
+[connection signal="show_buttons" from="Control/QuestionMenu/FileContainer" to="Control/QuestionMenu/FileButtons" method="_on_ScrollContainer_show_buttons"]
+[connection signal="pressed" from="Control/QuestionMenu/BackButton" to="Control" method="_on_BackButton_pressed"]
+[connection signal="file_added" from="Control/QuestionMenu/FilePanel/FileLoader" to="Control/QuestionMenu/FileContainer" method="_on_FileLoader_file_added"]
+[connection signal="pressed" from="Control/QuestionMenu/FileButtons/GoButton" to="." method="_on_GoButton_pressed"]
+[connection signal="pressed" from="Control/QuestionMenu/FileButtons/DeleteButton" to="Control/QuestionMenu/FileContainer" method="_on_DeleteButton_pressed"]

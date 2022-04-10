@@ -21,7 +21,8 @@ _global_script_class_icons={
 [application]
 
 config/name="CIS Godot Project"
-run/main_scene="res://Battle.tscn"
+run/main_scene="res://UIMenu/SceneSwitcher.tscn"
+config/use_custom_user_dir=true
 config/icon="res://Assets/Alien.png"
 
 [display]

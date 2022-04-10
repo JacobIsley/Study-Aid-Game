@@ -13,6 +13,7 @@ onready var question_menu = $QuestionMenu
 onready var tween = $Tween
 onready var creditpopup = $MainMenu/Popup
 
+
 func _ready():
 	menu_origin_pos = Vector2.ZERO
 	menu_origin_size = get_viewport_rect().size
@@ -47,14 +48,12 @@ func get_menu(menu_id: String) -> Control:
 			return main_menu
 
 
-func _on_Button_pressed():
-	next_menu("question")
-
-
+# return to main menu
 func _on_BackButton_pressed():
 	previous_menu()
 
 
+# show credits popup
 func _on_CreditsButton_pressed():
 	if(!show_credits):
 		creditpopup.popup()
@@ -64,5 +63,11 @@ func _on_CreditsButton_pressed():
 		show_credits = false
 
 
+# exit the game
 func _on_ExitButton_pressed():
 	get_tree().quit()
+
+
+# go to question select
+func _on_StartButton_pressed():
+	next_menu("question")

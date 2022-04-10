@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://QuestionButton.gd" type="Script" id=1]
+[ext_resource path="res://big_font.tres" type="DynamicFont" id=2]
+
+[node name="QuestionButton" type="Button"]
+margin_right = 8.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 0, 22 )
+custom_fonts/font = ExtResource( 2 )
+text = "Default Text"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 224.0
+margin_top = 6.0
+margin_right = 260.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+show_behind_parent = true
+margin_left = -2.0
+margin_right = 288.0
+margin_bottom = 22.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0.545098 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

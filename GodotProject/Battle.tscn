@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://Astronaut.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Battle.gd" type="Script" id=2]
@@ -10,10 +10,57 @@
 [ext_resource path="res://SwordActionButton.tscn" type="PackedScene" id=8]
 [ext_resource path="res://HealActionButton.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Alien.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Assets/HomeIconPressed.png" type="Texture" id=11]
+[ext_resource path="res://Assets/HomeIcon.png" type="Texture" id=12]
+[ext_resource path="res://Assets/HomeIconHover.png" type="Texture" id=13]
+[ext_resource path="res://default_font.tres" type="DynamicFont" id=14]
+[ext_resource path="res://HoverInfo.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Assets/MuteButtonPressed.png" type="Texture" id=16]
+[ext_resource path="res://Assets/MuteButton.png" type="Texture" id=17]
+[ext_resource path="res://Assets/MuteButtonHover.png" type="Texture" id=18]
+[ext_resource path="res://Assets/ColorblindButton.png" type="Texture" id=19]
+[ext_resource path="res://Assets/ColorblindButtonHover.png" type="Texture" id=20]
+[ext_resource path="res://Assets/ColorblindButtonPressed.png" type="Texture" id=21]
 
 [sub_resource type="Theme" id=3]
 
 [sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxTexture" id=11]
+texture = ExtResource( 20 )
+region_rect = Rect2( 0, 0, 26, 26 )
+
+[sub_resource type="StyleBoxTexture" id=12]
+texture = ExtResource( 21 )
+region_rect = Rect2( 0, 0, 26, 26 )
+
+[sub_resource type="StyleBoxTexture" id=13]
+texture = ExtResource( 19 )
+region_rect = Rect2( 0, 0, 26, 26 )
+
+[sub_resource type="StyleBoxTexture" id=8]
+texture = ExtResource( 18 )
+region_rect = Rect2( 0, 0, 26, 26 )
+
+[sub_resource type="StyleBoxTexture" id=9]
+texture = ExtResource( 16 )
+region_rect = Rect2( 0, 0, 26, 26 )
+
+[sub_resource type="StyleBoxTexture" id=10]
+texture = ExtResource( 17 )
+region_rect = Rect2( 0, 0, 26, 26 )
+
+[sub_resource type="StyleBoxTexture" id=5]
+texture = ExtResource( 13 )
+region_rect = Rect2( 0, 0, 26, 26 )
+
+[sub_resource type="StyleBoxTexture" id=6]
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 26, 26 )
+
+[sub_resource type="StyleBoxTexture" id=7]
+texture = ExtResource( 12 )
+region_rect = Rect2( 0, 0, 26, 26 )
 
 [sub_resource type="Animation" id=1]
 resource_name = "FadeToNewRoom"
@@ -58,11 +105,25 @@ script = ExtResource( 5 )
 position = Vector2( 160, 90 )
 texture = ExtResource( 3 )
 
+[node name="ColorblindFilter" type="ColorRect" parent="."]
+visible = false
+margin_right = 231.0
+margin_bottom = 180.0
+color = Color( 0.207843, 0.0627451, 0.498039, 0.54902 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="ColorblindFilter"]
+margin_left = 233.0
+margin_right = 320.0
+margin_bottom = 180.0
+color = Color( 0.996078, 0.109804, 0.109804, 1 )
+
 [node name="EnemyPosition" type="Position2D" parent="."]
-position = Vector2( 66, 103 )
+position = Vector2( 116, 99 )
 
 [node name="Astronaut" parent="EnemyPosition" instance=ExtResource( 1 )]
-position = Vector2( 0, -3 )
 
 [node name="Mockup" type="Sprite" parent="."]
 visible = false
@@ -113,10 +174,14 @@ margin_left = 5.0
 margin_top = 5.0
 margin_right = 215.0
 margin_bottom = 45.0
+size_flags_vertical = 3
 theme = SubResource( 3 )
-custom_fonts/normal_font = ExtResource( 6 )
+custom_fonts/normal_font = ExtResource( 14 )
 custom_styles/normal = SubResource( 4 )
-text = "test"
+text = "An enemy approaches!!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="StatsPanel" type="Panel" parent="UI"]
 margin_left = 34.0
@@ -148,6 +213,19 @@ text = "HP
 25"
 align = 1
 
+[node name="HoverInfo" parent="UI/StatsPanel/StatsContainer/HP" instance=ExtResource( 15 )]
+anchor_left = 0.213
+anchor_top = -0.13
+anchor_right = 0.213
+anchor_bottom = -0.13
+margin_left = -0.0110006
+margin_top = -0.00999975
+margin_right = 23.989
+margin_bottom = 29.99
+description = "Health Points
+
+Don't let this reach zero, use healing when available!"
+
 [node name="AP" type="Label" parent="UI/StatsPanel/StatsContainer"]
 margin_left = 51.0
 margin_top = 3.0
@@ -160,6 +238,19 @@ text = "AP
 3"
 align = 1
 
+[node name="HoverInfo2" parent="UI/StatsPanel/StatsContainer/AP" instance=ExtResource( 15 )]
+anchor_left = 0.208
+anchor_top = -0.13
+anchor_right = 0.208
+anchor_bottom = -0.13
+margin_left = 1.016
+margin_top = -0.00999975
+margin_right = 25.016
+margin_bottom = 29.99
+description = "Action Points
+
+Amount of actions per turn, when they run out the enemy gets a turn!"
+
 [node name="MP" type="Label" parent="UI/StatsPanel/StatsContainer"]
 margin_left = 103.0
 margin_top = 3.0
@@ -170,6 +261,19 @@ custom_fonts/font = ExtResource( 6 )
 text = "MP
 10"
 align = 1
+
+[node name="HoverInfo3" parent="UI/StatsPanel/StatsContainer/MP" instance=ExtResource( 15 )]
+anchor_left = 0.208
+anchor_top = -0.13
+anchor_right = 0.208
+anchor_bottom = -0.13
+margin_left = 1.016
+margin_top = -0.00999975
+margin_right = 25.016
+margin_bottom = 29.99
+description = "Magic Points
+
+Allow you to preform special moves. Refills when attacking an enemy."
 
 [node name="BattleActionButtons" type="GridContainer" parent="UI"]
 margin_left = 235.0
@@ -206,16 +310,62 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel3" type="Panel" parent="UI"]
-margin_left = 292.0
+[node name="ColorButton" type="Button" parent="UI"]
+margin_left = 235.0
 margin_top = 4.0
-margin_right = 318.0
+margin_right = 261.0
 margin_bottom = 30.0
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 12 )
+custom_styles/normal = SubResource( 13 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="HoverInfo" parent="UI/ColorButton" instance=ExtResource( 15 )]
+mouse_filter = 1
+description = "Blue-Yellow Button
+
+Applies a filter over the game for Blue-Yellow Colorblindness :)"
+
+[node name="MuteButton" type="Button" parent="UI"]
+margin_left = 264.0
+margin_top = 4.0
+margin_right = 290.0
+margin_bottom = 30.0
+custom_styles/hover = SubResource( 8 )
+custom_styles/pressed = SubResource( 9 )
+custom_styles/normal = SubResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HoverInfo" parent="UI/MuteButton" instance=ExtResource( 15 )]
+mouse_filter = 1
+description = "Mute Button
+
+Mute audio"
+
+[node name="HomeButton" type="Button" parent="UI"]
+margin_left = 292.0
+margin_top = 4.0
+margin_right = 318.0
+margin_bottom = 30.0
+custom_styles/hover = SubResource( 5 )
+custom_styles/pressed = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HoverInfo" parent="UI/HomeButton" instance=ExtResource( 15 )]
+mouse_filter = 1
+description = "Home Button
+
+Returns you to the main menu without saving any progress!"
+
 [node name="Fade" type="ColorRect" parent="."]
+visible = false
 modulate = Color( 1, 1, 1, 0 )
 margin_right = 320.0
 margin_bottom = 180.0
@@ -233,3 +383,5 @@ anims/RESET = SubResource( 2 )
 [connection signal="hp_changed" from="PlayerStats" to="UI/StatsPanel" method="_on_PlayerStats_hp_changed"]
 [connection signal="mp_changed" from="PlayerStats" to="UI/StatsPanel" method="_on_PlayerStats_mp_changed"]
 [connection signal="pressed" from="UI/CenterContainer/NextRoomButton" to="." method="_on_NextRoomButton_pressed"]
+[connection signal="pressed" from="UI/ColorButton" to="." method="_on_ColorButton_pressed"]
+[connection signal="pressed" from="UI/HomeButton" to="." method="_on_HomeButton_pressed"]
