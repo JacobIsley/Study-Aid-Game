@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Assets/Astronaut.png" type="Texture" id=1]
-[ext_resource path="res://Enemy.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Enemies/Enemy.tscn" type="PackedScene" id=2]
 
 [node name="Astronaut" instance=ExtResource( 2 )]
-hp = 35
+hp = 3
 damage = 3
 
 [node name="Sprite" parent="." index="0"]

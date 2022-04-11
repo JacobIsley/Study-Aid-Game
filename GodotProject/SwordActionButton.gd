@@ -5,7 +5,7 @@ const Slash = preload("res://Slash.tscn")
 func _on_pressed():
 	var enemy = BattleUnits.Enemy
 	var playerStats = BattleUnits.PlayerStats
-	if enemy != null:
+	if enemy != null or enemy.is_queued_for_deletion():
 		create_slash(enemy.global_position)
 		enemy.take_damage(4)
 		playerStats.mp += 2

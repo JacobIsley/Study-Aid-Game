@@ -2,16 +2,26 @@ extends Node2D
 
 const BattleUnits = preload("res://BattleUnits.tres")
 
+var Abutton = preload("res://AnswerButton.tscn")
+var Wbutton = preload("res://WrongButton.tscn")
+var QMark = preload("res://UIMenu/QuestionMark.tscn")
+
 export(Array, PackedScene) var enemies = []
 
-onready var buttons = $UI/BattleActionButtons
+onready var statsPanel = $UI/StatsPanel
+onready var question_buttons = $UI/QuestionButtons
+onready var q_container = $UI/QuestionButtons/QButtonContainer
+onready var text_box = $UI/TextboxPanel/Textbox
+onready var action_buttons = $UI/BattleActionButtons
 onready var animationPlayer = $AnimationPlayer
 onready var nextRoomButton = $UI/CenterContainer/NextRoomButton
 onready var enemyPostion = $EnemyPosition
 onready var colorblindFilter = $ColorblindFilter
+onready var endScreen = $UI/EndScreen
 
 export var scene_name = "battle"	# identifier for current scene
 signal scene_changed(scene_name)	# signal for changing scene back to main menu
+signal question_answered
 
 var colorblind = false
 
@@ -20,11 +30,16 @@ var question_set = {}	# set from other scene! Neat!
 var question_count = 0
 var question_list = []	# list element 0 is question, list element 1-3 are options
 var answer_list = []	# list of letter answers for each question
-
+var wrong_list = []		# list of all wrong question/answer combinations
+var num_correct = 0
+var num_answered = 0
+var average:String = "0"	# accuracy
+var just_answered = false	# status of most recent questiona answered
 func _ready():
 	randomize()
 	init_questions()
 	start_player_turn()
+
 	var enemy = BattleUnits.Enemy
 	if enemy != null:
 		enemy.connect("died", self, "_on_Enemy_died")
@@ -35,43 +50,58 @@ func init_questions():
 	question_count = question_set["q_count"]
 	question_list = question_set["question_list"]
 	answer_list = question_set["answer_list"]
-	print("Caught it: " + str(question_list))
+
 
 func start_enemy_turn():
-	buttons.hide()
+	action_buttons.hide()
 	var enemy = BattleUnits.Enemy
 	if enemy != null and not enemy.is_queued_for_deletion():
 		enemy.attack()
 		yield(enemy, "end_turn")
 	start_player_turn()
 
+
 func start_player_turn():
-	buttons.show()
-	var playerStats = BattleUnits.PlayerStats
-	playerStats.ap = playerStats.max_ap
-	
-	yield(playerStats, "end_turn")
-	start_enemy_turn()
+	var enemy = BattleUnits.Enemy
+
+	if enemy != null and not enemy.is_queued_for_deletion():
+		action_buttons.show()
+
+		var playerStats = BattleUnits.PlayerStats
+		playerStats.ap = playerStats.max_ap
+		
+		yield(playerStats, "end_turn")
+		start_enemy_turn()
+
 
 func create_new_enemy():
 	enemies.shuffle()
 	var Enemy = enemies.front()
 	var enemy = Enemy.instance()
+	BattleUnits.Enemy = enemy
 	enemyPostion.add_child(enemy)
 	enemy.connect("died", self, "_on_Enemy_died")
-	
+
+
 func _on_Enemy_died():
-	nextRoomButton.show()
-	buttons.hide()
+	#nextRoomButton.show()
+	BattleUnits.Enemy = null
+	action_buttons.hide()
+
+	start_question_round()
+
 
 func _on_NextRoomButton_pressed():
 	nextRoomButton.hide()
-	animationPlayer.play("FadeToNewRoom")
+	animationPlayer.play("FadeIn")
+	print(animationPlayer.is_playing())
 	yield(animationPlayer, "animation_finished")
 	var playerStats = BattleUnits.PlayerStats
 	playerStats.ap = playerStats.max_ap
-	buttons.show()
 	create_new_enemy()
+	animationPlayer.play("FadeOut")
+	yield(animationPlayer, "animation_finished")
+	start_player_turn()
 
 
 func _on_HomeButton_pressed():
@@ -84,3 +114,131 @@ func _on_ColorButton_pressed():
 		colorblindFilter.show()
 	else:
 		colorblindFilter.hide()
+
+
+# pick a question, mix options and set up their buttons, update text prompt. Heal if right, nothing if wrong
+func start_question_round():
+	animationPlayer.play("FadeIn")
+	yield(animationPlayer, "animation_finished")
+	
+	if question_list.size() > 0:
+		add_mark()
+		question_buttons.show()
+		var q_num = randi() % question_list.size()
+		var q_list = question_list[q_num]
+		var question = q_list[0]
+		var answer = answer_list[q_num]
+		var options = []
+		
+		text_box.set_text(question)
+		
+		for i in range(q_list.size()):	# get options
+			if i != 0:
+				options.append(q_list[i])
+		
+		options.shuffle()
+		
+		for o in options:
+			if o == answer:
+				add_answer_button(o)
+			else:
+				add_wrong_button(o)
+		
+		animationPlayer.play("FadeOut")
+		yield(animationPlayer, "animation_finished")
+		
+		yield(self, "question_answered")
+		
+		
+		
+		# remove question that was just answered
+		question_list.pop_at(q_num)
+		answer_list.pop_at(q_num)
+		if not just_answered:	# answered incorrectly
+			var pair = [question, answer]
+			wrong_list.append(pair)
+			
+		# cleanup. remove buttons, hide panel, set text to "", show next room button
+		remove_mark()
+		remove_question_buttons()
+		question_buttons.hide()
+		text_box.set_text("")
+		nextRoomButton.show()
+	
+	else:	# no more questions to answer, end game
+		_on_PlayerStats_end_game()
+
+
+func add_answer_button(text:String):
+	var button = Abutton.instance()
+	q_container.add_child(button)
+	button.set_button_text(text)
+	button.connect("pressed", self, "_on_Question_Button_pressed", [button.correct])
+
+
+func add_wrong_button(text:String):
+	var button = Wbutton.instance()
+	q_container.add_child(button)
+	button.set_button_text(text)
+	button.connect("pressed", self, "_on_Question_Button_pressed", [button.correct])
+
+
+func _on_Question_Button_pressed(correct:bool):
+	num_answered += 1
+	if correct:
+		# play animation, heal X points
+		num_correct += 1
+
+	else:
+		# play animation
+		print("Wrong!")
+	
+	# compute the average in string form rounded to a %
+	average = str((float(num_correct) / num_answered) * 100)
+	if average.length() > 2 and average != "100":
+		average = average.substr(0,2)
+
+	just_answered = correct
+	emit_signal("question_answered")
+
+func remove_question_buttons():
+	for child in q_container.get_children():
+		q_container.remove_child(child)
+
+
+func build_end_string() -> String:
+	var ret = "You answered " + str(num_answered) + " questions,\n and had an accuracy of " + average + "%\n"
+	ret += "\nQuestions to review:\n\n"
+	if wrong_list:
+		for set in wrong_list:
+			ret += set[0] + "\n"
+			ret += "	ANSWER: " + set[1] + "\n\n"
+	else:
+		ret += "	None, nice work!\n\n"
+	
+	ret += "Thank you for playing!!"
+	return ret
+
+
+func add_mark():
+	var q = QMark.instance()
+	enemyPostion.add_child(q)
+
+func remove_mark():
+	enemyPostion.remove_child(enemyPostion.get_child(0))
+
+
+func _on_PlayerStats_end_game():
+	animationPlayer.play("FadeIn")
+	yield(animationPlayer, "animation_finished")
+	
+	action_buttons.hide()
+	question_buttons.hide()
+	statsPanel.hide()
+	enemyPostion.hide()
+	endScreen.set_label(build_end_string())
+	endScreen.show()
+	text_box.set_text("Game Over!!\n\nExit to the main menu when finished reading")
+	
+	animationPlayer.play("FadeOut")
+	yield(animationPlayer, "animation_finished")

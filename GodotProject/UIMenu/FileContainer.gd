@@ -68,8 +68,6 @@ func select_set(file_name, button):
 		selected_name = null
 		button.is_selected(false)
 
-	print("Selected is now " + str(selected_name))
-
 
 func _on_FileLoader_file_added(file_name):
 	add_button(file_name)
@@ -85,8 +83,8 @@ func _on_DeleteButton_pressed():
 	if not present:	# remove from database
 		print("Tried to delete " + selected_name + " but it wasn't in the database!")
 		
-	var status = delete_file(dir_path + selected_name)	# remove from stored files
-	print("deleted? " + str(status))
+	var _status = delete_file(dir_path + selected_name)	# remove from stored files
+	
 	selected_name = null
 	emit_signal("show_buttons", false)
 

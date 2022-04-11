@@ -13,5 +13,5 @@ func _on_HoverInfo_mouse_exited():
 		var main = get_tree().current_scene.get_child(2)
 		var textbox = main.find_node("Textbox")
 		if textbox != null:
-			textbox.text = ""
+			textbox.text = textbox.default_text
 
