@@ -98,9 +98,9 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
-margin_top = 8.0
-margin_right = 48.0
-margin_bottom = 56.0
+margin_top = 6.0
+margin_right = 69.0
+margin_bottom = 67.0
 theme = ExtResource( 3 )
 text = "Programmers: Jake Isley, Yanye Luther
 
@@ -108,12 +108,13 @@ Artists: Jake Isley, Eliana Sweet
 
 Writers:  Gracen Pendleton, Kathryn Powers, Eliana Sweet 
 		
-Special thanks: SPONSOR, PLAYTESTERS, TEACHER
+Special thanks: Heartbeast, Dr. Jon Clark, and our 
+sponsors.
 		
-		
-
-
-		
+Resources Used:
+    Art assets: Aseprite, Minecraft Color Palette
+	    Programming: Godot Game Engine
+		    Sound: Chiptone.io
 CIS320"
 __meta__ = {
 "_edit_use_anchors_": false
