@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://UIMenu/Menus.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Menu.png" type="Texture" id=2]
@@ -10,6 +10,8 @@
 [ext_resource path="res://UIMenu/FileLoader.tscn" type="PackedScene" id=8]
 [ext_resource path="res://UIMenu/FileContainer.gd" type="Script" id=9]
 [ext_resource path="res://UIMenu/FileButtons.gd" type="Script" id=10]
+[ext_resource path="res://default_font.tres" type="DynamicFont" id=11]
+[ext_resource path="res://UIMenu/HelpButton.gd" type="Script" id=12]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -213,9 +215,50 @@ margin_bottom = 29.0
 theme = ExtResource( 3 )
 custom_styles/focus = SubResource( 3 )
 text = "Help"
+script = ExtResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="HelpPopup" type="Popup" parent="Control/QuestionMenu/HelpButton"]
+visible = true
+anchor_left = -7.25
+anchor_top = -1.231
+anchor_right = -7.25
+anchor_bottom = -1.231
+margin_left = 128.0
+margin_top = 32.003
+margin_right = 280.0
+margin_bottom = 128.003
+
+[node name="Panel" type="Panel" parent="Control/QuestionMenu/HelpButton/HelpPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="RichTextLabel" parent="Control/QuestionMenu/HelpButton/HelpPopup/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+custom_fonts/normal_font = ExtResource( 11 )
+text = "Format a question set like so:
+
+ QUESTION: What is the color of this panel?
+  A: Green	  
+  ANSWER: Black
+  C: Red
+
+There can be 1-4 answer options. QUESTION and ANSWER tags must be capitalized. Additionally, the file containing the questions must be a text file (.txt).
+
+Once the following criteria are met, drag and drop the .txt file into the box below. If the number of questions is not consistent, check the .txt for errors.
+
+Additional infomation is provided in the Stellar Studying user guide.
+"
 
 [node name="FilePanel" type="Panel" parent="Control/QuestionMenu"]
 margin_left = 16.0
@@ -271,6 +314,7 @@ __meta__ = {
 [connection signal="pressed" from="Control/MainMenu/CenterContainer/ExitButton" to="Control" method="_on_ExitButton_pressed"]
 [connection signal="show_buttons" from="Control/QuestionMenu/FileContainer" to="Control/QuestionMenu/FileButtons" method="_on_ScrollContainer_show_buttons"]
 [connection signal="pressed" from="Control/QuestionMenu/BackButton" to="Control" method="_on_BackButton_pressed"]
+[connection signal="pressed" from="Control/QuestionMenu/HelpButton" to="Control/QuestionMenu/HelpButton" method="_on_HelpButton_pressed"]
 [connection signal="file_added" from="Control/QuestionMenu/FilePanel/FileLoader" to="Control/QuestionMenu/FileContainer" method="_on_FileLoader_file_added"]
 [connection signal="pressed" from="Control/QuestionMenu/FileButtons/GoButton" to="." method="_on_GoButton_pressed"]
 [connection signal="pressed" from="Control/QuestionMenu/FileButtons/DeleteButton" to="Control/QuestionMenu/FileContainer" method="_on_DeleteButton_pressed"]

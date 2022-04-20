@@ -94,3 +94,7 @@ func delete_file(file_path):	# delete a file from the stored files
 	var file = File.new()
 	if file.file_exists(file_path) and dir.open(dir_path) == OK:
 		return dir.remove(file_path)
+
+
+func _on_HelpButton_pressed():
+	pass # Replace with function body.

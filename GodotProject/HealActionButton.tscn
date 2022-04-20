@@ -11,4 +11,4 @@ script = ExtResource( 2 )
 mouse_filter = 1
 description = "Heal
 
-Heals 5 health"
+Heals back some health, costs 8 MP"

@@ -39,7 +39,7 @@ func set_display_text()->void:
 	if not sentinal and ".txt" in fileName:
 		# parse the individual lines
 		var line = loadedFile.get_line()
-		while(line):
+		while not loadedFile.eof_reached():
 			parse_line(line)
 			line = loadedFile.get_line() # increment line
 	
@@ -58,13 +58,15 @@ func set_display_text()->void:
 # parse a given line into a question, option, or answer
 func parse_line(line:String):
 	var parts = line.split(":")
-	if "QUESTION" in parts[0]: # if question add to question list, allocate new option list for q
-		question_list.push_back([parts[1]])
-	elif "ANSWER" in parts[0]: # same for answer list, no option alloc
-		answer_list.push_back(parts[1])
-		question_list[-1].push_back(parts[1])
-	else:
-		question_list[-1].push_back(parts[1]) # put option into corresponding q list
+	
+	if parts.size() > 1:
+		if "QUESTION" in parts[0]: # if question add to question list, allocate new option list for q
+			question_list.push_back([parts[1]])
+		elif "ANSWER" in parts[0]: # same for answer list, no option alloc
+			answer_list.push_back(parts[1])
+			question_list[-1].push_back(parts[1])
+		else:
+			question_list[-1].push_back(parts[1]) # put option into corresponding q list
 	
 
 func save_question_set():
@@ -85,11 +87,12 @@ func save_question_set():
 
 
 func read_properly():	# check that the file was read properly
+
 	if(q_count == 0 or a_count == 0):
-		displayText.text = fileName + " was loaded, but couldn't be processed"
+		displayText.text = fileName + " was loaded, but couldn't be processed."
 		return false
 	elif a_count != q_count:
-		displayText.text = fileName + " was loaded, but has syntax errors"
+		displayText.text = fileName + " was loaded, but has syntax errors."
 		return false
 	else:
 		displayText.text = fileName + " was loaded!"

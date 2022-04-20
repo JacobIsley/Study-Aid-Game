@@ -8,13 +8,18 @@ var QMark = preload("res://UIMenu/QuestionMark.tscn")
 
 export(Array, PackedScene) var enemies = []
 
-onready var statsPanel = $UI/StatsPanel
 onready var question_buttons = $UI/QuestionButtons
-onready var q_container = $UI/QuestionButtons/QButtonContainer
-onready var text_box = $UI/TextboxPanel/Textbox
+onready var sword_button = $UI/BattleActionButtons/SwordActionButton
+onready var special_button = $UI/BattleActionButtons/SpecialAttackActionButton
+onready var heal_button = $UI/BattleActionButtons/HealActionButton
 onready var action_buttons = $UI/BattleActionButtons
-onready var animationPlayer = $AnimationPlayer
+onready var q_container = $UI/QuestionButtons/QButtonContainer
 onready var nextRoomButton = $UI/CenterContainer/NextRoomButton
+
+onready var numberPanel = $UI/NumberPanel
+onready var statsPanel = $UI/StatsPanel
+onready var text_box = $UI/TextboxPanel/Textbox
+onready var animationPlayer = $AnimationPlayer
 onready var enemyPostion = $EnemyPosition
 onready var colorblindFilter = $ColorblindFilter
 onready var endScreen = $UI/EndScreen
@@ -24,7 +29,7 @@ signal scene_changed(scene_name)	# signal for changing scene back to main menu
 signal question_answered
 
 var colorblind = false
-
+var muted = false
 # Question functionality variables
 var question_set = {}	# set from other scene! Neat!
 var question_count = 0
@@ -35,11 +40,17 @@ var num_correct = 0
 var num_answered = 0
 var average:String = "0"	# accuracy
 var just_answered = false	# status of most recent questiona answered
+
+var level_two
+var level_three
+var elow_bound = 0
+
+
 func _ready():
 	randomize()
 	init_questions()
 	start_player_turn()
-
+	
 	var enemy = BattleUnits.Enemy
 	if enemy != null:
 		enemy.connect("died", self, "_on_Enemy_died")
@@ -50,6 +61,8 @@ func init_questions():
 	question_count = question_set["q_count"]
 	question_list = question_set["question_list"]
 	answer_list = question_set["answer_list"]
+	level_two = question_count/3
+	level_three = level_two * 2
 
 
 func start_enemy_turn():
@@ -62,6 +75,8 @@ func start_enemy_turn():
 
 
 func start_player_turn():
+	numberPanel.show()
+	
 	var enemy = BattleUnits.Enemy
 
 	if enemy != null and not enemy.is_queued_for_deletion():
@@ -75,8 +90,8 @@ func start_player_turn():
 
 
 func create_new_enemy():
-	enemies.shuffle()
-	var Enemy = enemies.front()
+	var i = randi() % 6 + elow_bound
+	var Enemy = enemies[i]
 	var enemy = Enemy.instance()
 	BattleUnits.Enemy = enemy
 	enemyPostion.add_child(enemy)
@@ -87,14 +102,16 @@ func _on_Enemy_died():
 	#nextRoomButton.show()
 	BattleUnits.Enemy = null
 	action_buttons.hide()
-
+	
+	animationPlayer.play("Goodjob")
+	yield(animationPlayer, "animation_finished")
+	
 	start_question_round()
 
 
 func _on_NextRoomButton_pressed():
 	nextRoomButton.hide()
 	animationPlayer.play("FadeIn")
-	print(animationPlayer.is_playing())
 	yield(animationPlayer, "animation_finished")
 	var playerStats = BattleUnits.PlayerStats
 	playerStats.ap = playerStats.max_ap
@@ -122,6 +139,7 @@ func start_question_round():
 	yield(animationPlayer, "animation_finished")
 	
 	if question_list.size() > 0:
+		numberPanel.hide()
 		add_mark()
 		question_buttons.show()
 		var q_num = randi() % question_list.size()
@@ -130,7 +148,7 @@ func start_question_round():
 		var answer = answer_list[q_num]
 		var options = []
 		
-		text_box.set_text(question)
+		text_box.set_text(str(num_answered+1) + ": " + question)
 		
 		for i in range(q_list.size()):	# get options
 			if i != 0:
@@ -159,14 +177,30 @@ func start_question_round():
 			wrong_list.append(pair)
 			
 		# cleanup. remove buttons, hide panel, set text to "", show next room button
-		remove_mark()
 		remove_question_buttons()
 		question_buttons.hide()
 		text_box.set_text("")
+		update_level()	# check if level up should occur
 		nextRoomButton.show()
 	
 	else:	# no more questions to answer, end game
 		_on_PlayerStats_end_game()
+
+
+func update_level():
+	if num_answered == level_two:
+		sword_button.damage = 5
+		heal_button.heal_amount = 7
+		special_button.damage = 10
+		elow_bound = 6
+		numberPanel.update_numbers(5, 10, 7)
+		
+	elif num_answered == level_three:
+		sword_button.damage = 7
+		heal_button.heal_amount = 10
+		special_button.damage = 15
+		elow_bound = 12
+		numberPanel.update_numbers(7, 15, 10)
 
 
 func add_answer_button(text:String):
@@ -185,13 +219,26 @@ func add_wrong_button(text:String):
 
 func _on_Question_Button_pressed(correct:bool):
 	num_answered += 1
+	remove_mark()
+	
+	for button in q_container.get_children():
+		button.disabled = true
+	
 	if correct:
 		# play animation, heal X points
 		num_correct += 1
+		var playerStats = BattleUnits.PlayerStats	#recover all stats on right answer
+		playerStats.hp = playerStats.max_hp
+		playerStats.ap = playerStats.max_ap
+		playerStats.mp = playerStats.max_mp
 
+		animationPlayer.play("Goodjob")
+		yield(animationPlayer, "animation_finished")
+		
 	else:
 		# play animation
-		print("Wrong!")
+		animationPlayer.play("TooBad")
+		yield(animationPlayer, "animation_finished")
 	
 	# compute the average in string form rounded to a %
 	average = str((float(num_correct) / num_answered) * 100)
@@ -242,3 +289,12 @@ func _on_PlayerStats_end_game():
 	
 	animationPlayer.play("FadeOut")
 	yield(animationPlayer, "animation_finished")
+
+
+func _on_MuteButton_pressed():
+	muted = !muted
+	var master_sound = AudioServer.get_bus_index("Master")
+	if muted:
+		AudioServer.set_bus_mute(master_sound, true)
+	else:
+		AudioServer.set_bus_mute(master_sound, false)

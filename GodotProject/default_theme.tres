@@ -18,12 +18,18 @@ margin_bottom = 4.0
 
 [resource]
 default_font = ExtResource( 1 )
+Button/colors/font_color_disabled = Color( 0.901961, 0.901961, 0.901961, 1 )
 Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
 Button/fonts/font = ExtResource( 1 )
+Button/styles/disabled = ExtResource( 4 )
 Button/styles/focus = SubResource( 6 )
 Button/styles/hover = ExtResource( 4 )
 Button/styles/normal = ExtResource( 2 )
 Button/styles/pressed = ExtResource( 5 )
+HScrollBar/styles/grabber = ExtResource( 4 )
+HScrollBar/styles/grabber_highlight = ExtResource( 4 )
+HScrollBar/styles/grabber_pressed = ExtResource( 5 )
+HScrollBar/styles/scroll = ExtResource( 2 )
 Panel/styles/panel = SubResource( 5 )
 VScrollBar/styles/grabber = ExtResource( 4 )
 VScrollBar/styles/grabber_highlight = ExtResource( 4 )

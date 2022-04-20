@@ -12,4 +12,4 @@ script = ExtResource( 2 )
 mouse_filter = 1
 description = "Attack
 
-Deals 4 damage"
+Deals light damage"
